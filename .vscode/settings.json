@@ -1,0 +1,35 @@
+{
+        "calva.customREPLCommandSnippets": [
+        {
+            "name": "Start dataseq-core Server",
+            "ns": "user",
+            "repl": "clj",
+            "snippet": "(start)"
+        },
+        {
+            "name": "Stop dataseq-core Server",
+            "ns": "user",
+            "repl": "clj",
+            "snippet": "(stop)"
+        },
+        {
+            "name": "Restart dataseq-core Server",
+            "ns": "user",
+            "repl": "clj",
+            "snippet": "(restart)"
+        }
+    ],
+    "calva.replConnectSequences": [
+                {
+            "name": "Server only - dataseq-core",
+            "projectType": "Leiningen",
+            "afterCLJReplJackInCode": "(start)",
+            "cljsType": "none",
+            "menuSelections": {
+                "leinProfiles": [
+                    "dev"
+                ]
+            }
+        }
+    ]
+}
