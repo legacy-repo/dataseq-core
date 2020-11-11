@@ -1,4 +1,4 @@
-(defproject dataseq-core "0.1.0-SNAPSHOT"
+(defproject dataseq-core "0.1.1"
 
   :description "FIXME: write description"
   :url "http://example.com/FIXME"
@@ -30,6 +30,7 @@
                  [org.webjars/webjars-locator "0.40"]
                  [ring-webjars "0.2.0"]
                  [ring/ring-core "1.8.2"]
+                 [ring-cors "0.1.13"]
                  [ring/ring-defaults "0.3.2"]
                  [ring/ring-servlet "1.7.1"]
                  [selmer "1.12.31"]]
@@ -64,7 +65,8 @@
              :aot :all
              :uberjar-name "dataseq-core.jar"
              :source-paths ["env/prod/clj"]
-             :resource-paths ["env/prod/resources"]}
+             :resource-paths ["env/prod/resources"]
+             :dependencies [[luminus-jetty "0.2.0"]]}
 
    :dev           [:project/dev :profiles/dev]
    :test          [:project/dev :project/test :profiles/test]
