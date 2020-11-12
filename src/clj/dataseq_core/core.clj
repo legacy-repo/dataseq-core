@@ -62,5 +62,18 @@
     (log/info component "started"))
   (.addShutdownHook (Runtime/getRuntime) (Thread. handler/destroy)))
 
-(defn -main [& args]
-  (start-app args))
+(defn -main
+  "Launch dataseq-core in standalone mode."
+  [& args]
+  (log/info "Starting dataseq-core in STANDALONE mode")
+  ; Load configuration from system-props & env
+  (mount/start #'dataseq-core.config/env)
+  (cond
+    ; When the DATABASE_URL variable has been set as "", an exception will be raised.
+    ; #error: URI connection string cannot be empty!
+    (or (nil? (:mongo-uri env)) (= "" (:mongo-uri env)))
+    (do
+      (log/error "Database configuration not found, :mongo-uri environment variable must be set before running")
+      (System/exit 1))
+    :else
+    (start-app args)))   ; with no command line args just start Datains normally
