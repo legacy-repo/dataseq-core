@@ -28,7 +28,7 @@
   (let [conn-info (connect (:mongo-uri env))]
     (reset! conn (:conn conn-info))
     (reset! db (:db conn-info))
-    (reset! default-collection (:mongo-collection env))))
+    (reset! default-collection (:mongo-schema-collection env))))
 
 (defn stop-connection!
   []
@@ -42,27 +42,6 @@
   [db-name]
   (let [db-inst (mg/get-db @conn db-name)]
     (reset! db db-inst)))
-
-(defn with-collection
-  ([coll query-coll]
-   (let [db-coll (if (string? coll)
-                   (.getCollection @db coll)
-                   coll)
-         empty-query (q/empty-query db-coll)
-         query (apply merge empty-query query-coll)]
-     (log/info "Query: " query)
-     (q/exec query)))
-  ([coll] (with-collection coll [])))
-
-(defn query
-  ([query-coll]
-   (with-collection @default-collection query-coll))
-  ([]
-   (with-collection @default-collection)))
-
-(defn count-coll
-  [query-map]
-  (mcoll/count @db @default-collection query-map))
 
 (defn find-coll
   [query]
@@ -100,6 +79,31 @@
   []
   {:snapshot true})
 
+(defn with-collection
+  ([coll query-coll]
+   (let [db-coll (if (string? coll)
+                   (.getCollection @db coll)
+                   coll)
+         empty-query (q/empty-query db-coll)
+         query (apply merge empty-query query-coll)]
+     (log/info "Query: " query)
+     (q/exec query)))
+  ([coll] (with-collection coll [])))
+
+(defn query
+  ([]
+   (with-collection @default-collection))
+  ([query-coll]
+   (with-collection @default-collection query-coll))
+  ([coll query-coll]
+   (with-collection coll query-coll)))
+
+(defn count-coll
+  ([query-map]
+   (mcoll/count @db @default-collection query-map))
+  ([coll query-map]
+   (mcoll/count @db coll query-map)))
+
 (defn count-group-by
   ([coll query-map group-name]
    (mcoll/aggregate @db coll [{"$match" query-map}
@@ -110,3 +114,11 @@
    (count-group-by @default-collection query-map group-name))
   ([group-name]
    (count-group-by @default-collection {} group-name)))
+
+(defn list-options
+  [coll field]
+  (mcoll/distinct @db coll field))
+
+(defn list-collections
+  []
+  (list-options @default-collection "collection"))

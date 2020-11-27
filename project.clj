@@ -1,4 +1,4 @@
-(defproject dataseq-core "0.1.1"
+(defproject dataseq-core "0.2.1"
 
   :description "FIXME: write description"
   :url "http://example.com/FIXME"
