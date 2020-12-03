@@ -62,7 +62,7 @@
 
 (s/def ::key
   (st/spec
-   {:spec                (s/and string? #(re-find #"^[a-z][a-z0-9_]{1,61}[a-z0-9]$" %))  ; 不超过 64 个字符
+   {:spec                (s/and string? #(re-find #"^[a-z][a-z0-9_.]{1,61}[a-z0-9]$" %))  ; 不超过 64 个字符
     :type                :string
     :description         "Field Key"
     :reason              "The field key can't be none."}))
