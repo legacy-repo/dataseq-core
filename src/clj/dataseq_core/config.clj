@@ -11,3 +11,5 @@
     [(args)
      (source/from-system-props)
      (source/from-env)]))
+
+(def ^Boolean is-test? "Are we running in `test` mode (i.e. via `lein test`)?"                    (= "test" (:dataseq-run-mode env)))

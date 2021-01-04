@@ -3,6 +3,7 @@
    [dataseq-core.handler :as handler]
    [dataseq-core.nrepl :as nrepl]
    [luminus.http-server :as http]
+   [dataseq-core.events :as events]
    [dataseq-core.config :refer [env]]
    [dataseq-core.db.core :as dc]
    [clojure.tools.cli :refer [parse-opts]]
@@ -27,6 +28,12 @@
   (dc/setup-connection!)
   :stop
   (dc/stop-connection!))
+
+(mount/defstate event
+  :start
+  (events/initialize-events!)
+  :stop
+  (events/stop-events!))
 
 (mount/defstate ^{:on-reload :noop} http-server
   :start
@@ -60,6 +67,8 @@
                         mount/start-with-args
                         :started)]
     (log/info component "started"))
+  ; Update data schema for all collections
+  (events/publish-event! :schema-update {})
   (.addShutdownHook (Runtime/getRuntime) (Thread. handler/destroy)))
 
 (defn -main

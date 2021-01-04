@@ -6,6 +6,10 @@
   :dependencies [[ch.qos.logback/logback-classic "1.2.3"]
                  [cheshire "5.10.0"]
                  [clojure.java-time "0.3.2"]
+                 [org.clojure/core.async "0.4.500"
+                  :exclusions [org.clojure/tools.reader]]
+                 [colorize "0.1.1" :exclusions [org.clojure/clojure]]
+                 [org.tcrawley/dynapath "1.0.0"]
                  [com.fasterxml.jackson.core/jackson-core "2.11.3"]
                  [com.fasterxml.jackson.core/jackson-databind "2.11.3"]
                  [com.google.guava/guava "27.0.1-jre"]

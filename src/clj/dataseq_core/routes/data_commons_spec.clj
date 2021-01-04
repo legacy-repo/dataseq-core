@@ -94,9 +94,15 @@
     :description         "The Priority Level of the Dispalying."
     :reason              "The priority level need to a number."}))
 
+(s/def ::values
+  (st/spec
+   {:spec                vector?
+    :description         "Supported options."
+    :reason              "The values must be a vector."}))
+
 (def field
   (s/keys :req-un [::name ::short ::description ::key ::type ::collection ::priority]
-          :opt-un []))
+          :opt-un [::values]))
 
 (def fields
   (s/coll-of field))
