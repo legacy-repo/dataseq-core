@@ -54,9 +54,12 @@
              :responses  {200 {:body any?}}
              :handler    (fn [{{:keys [query body path]} :parameters}]
                            (let [group (:group query)
+                                 dedup-field (:dedup_field query)
                                  results (parser/check-rules body)
                                  coll-name (:coll-name path)]
                              (if results (bad-request results)
                                  (let [query-map (parser/parse body)]
                                    (log/info "Count collections: " query-map group query)
-                                   (ok (dc/count-group-by coll-name query-map group))))))}}]])
+                                   (if dedup-field
+                                     (ok (dc/count-group-by coll-name query-map group))
+                                     (ok (dc/count-group-uniq-by coll-name query-map group dedup-field)))))))}}]])

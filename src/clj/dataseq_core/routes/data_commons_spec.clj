@@ -30,10 +30,17 @@
     :description         "group name"
     :reason              "The group parameter can't be none."}))
 
+(s/def ::dedup_field
+  (st/spec
+   {:spec                string?
+    :type                :string
+    :description         "Field name for deduplicating"
+    :reason              "The dedup_field parameter can't be none."}))
+
 (def count-params-query
   "A spec for the query parameters."
   (s/keys :req-un []
-          :opt-un [::group]))
+          :opt-un [::group ::dedup_field]))
 
 (s/def ::coll-name
   (st/spec
