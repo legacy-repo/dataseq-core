@@ -106,12 +106,11 @@
 
 (defn count-group-uniq-by
   ([coll query-map group-name dedup-field]
-   (let [dedup-field (str "$" dedup-field)]
-     (mcoll/aggregate @db coll [{"$match" query-map}
-                                {"$group" {:_id (str "$" group-name)
-                                           :dedup-field {"$push" dedup-field}}}
-                                {"$project" {:total {"$size" {"$setDifference" [dedup-field []]}}}}]
-                      :cursor {:batch-size 0})))
+   (mcoll/aggregate @db coll [{"$match" query-map}
+                              {"$group" {:_id (str "$" group-name)
+                                         :dedup_field {"$push" (str "$" dedup-field)}}}
+                              {"$project" {:total {"$size" {"$setDifference" ["$dedup_field" []]}}}}]
+                    :cursor {:batch-size 0}))
   ([query-map group-name dedup-field]
    (count-group-uniq-by @default-collection query-map group-name dedup-field))
   ([group-name dedup-field]
