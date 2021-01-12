@@ -61,5 +61,5 @@
                                  (let [query-map (parser/parse body)]
                                    (log/info "Count collections: " query-map group query)
                                    (if dedup-field
-                                     (ok (dc/count-group-by coll-name query-map group))
-                                     (ok (dc/count-group-uniq-by coll-name query-map group dedup-field)))))))}}]])
+                                     (ok (dc/count-group-uniq-by coll-name query-map group dedup-field))
+                                     (ok (dc/count-group-by coll-name query-map group)))))))}}]])
