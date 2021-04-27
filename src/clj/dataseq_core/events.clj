@@ -52,7 +52,6 @@
 
 ;;; -------------------------------------------------- PUBLICATION ---------------------------------------------------
 
-
 (def ^:private events-channel
   "Channel to host events publications."
   (async/chan))

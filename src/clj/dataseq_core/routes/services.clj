@@ -10,7 +10,8 @@
    [dataseq-core.middleware.formats :as formats]
    [dataseq-core.middleware.exception :as exception]
    [ring.util.http-response :refer [ok]]
-   [dataseq-core.routes.data-commons :refer [data-commons]]))
+   [dataseq-core.routes.data-commons :refer [data-commons]]
+   [dataseq-core.routes.data-repo :refer [data-repo]]))
 
 (defn service-routes []
   (merge
@@ -53,4 +54,5 @@
       {:get (constantly (ok {:message "pong"}))}]]]
 
    ;; The group of routes for data commons
-   data-commons))
+   data-commons
+   data-repo))

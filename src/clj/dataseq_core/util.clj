@@ -2,6 +2,7 @@
   "Common utility functions useful throughout the codebase."
   (:require [clojure.tools.namespace.find :as ns-find]
             [colorize.core :as colorize]
+            [clj-time.core :as t]
             [clojure.java.classpath :as classpath]
             [dataseq-core.plugins.classloader :as classloader]))
 
@@ -41,3 +42,10 @@
 
   (^String [color format-string & args]
    (colorize color (apply format (str format-string) args))))
+
+(defn now
+  "Get the current local datetime."
+  ([offset]
+   (t/to-time-zone (t/now) (t/time-zone-for-offset offset)))
+  ([] (now 0)))
+

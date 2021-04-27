@@ -16,3 +16,4 @@ profiles.clj
 .clj-kondo
 .lsp
 .calva
+.idea

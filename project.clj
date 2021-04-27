@@ -38,7 +38,10 @@
                  [ring-cors "0.1.13"]
                  [ring/ring-defaults "0.3.2"]
                  [ring/ring-servlet "1.7.1"]
-                 [selmer "1.12.31"]]
+                 [selmer "1.12.31"]
+                 [me.raynes/fs "1.4.6"]
+                 [clj-jgit "1.0.1"]
+                 [clj-time "0.15.2"]]
 
   :repositories [["central" "https://maven.aliyun.com/repository/central"]
                  ["jcenter" "https://maven.aliyun.com/repository/jcenter"]

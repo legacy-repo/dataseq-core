@@ -69,6 +69,8 @@
     (log/info component "started"))
   ; Update data schema for all collections
   (events/publish-event! :schema-update {})
+  ; Update manifest for all datarepo
+  (events/publish-event! :repo-update {})   
   (.addShutdownHook (Runtime/getRuntime) (Thread. handler/destroy)))
 
 (defn -main

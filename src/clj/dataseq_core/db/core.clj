@@ -4,7 +4,8 @@
             [monger.collection :as mcoll]
             [monger.internal.pagination :as mp]
             [clojure.tools.logging :as log]
-            [dataseq-core.config :refer [env]]))
+            [dataseq-core.config :refer [env]])
+  (:import org.bson.types.ObjectId))
 
 (defn- connect
   [uri]
