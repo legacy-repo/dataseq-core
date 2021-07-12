@@ -41,7 +41,8 @@
                  [selmer "1.12.31"]
                  [me.raynes/fs "1.4.6"]
                  [clj-jgit "1.0.1"]
-                 [clj-time "0.15.2"]]
+                 [clj-time "0.15.2"]
+                 [digest "1.4.10"]]
 
   :repositories [["central" "https://maven.aliyun.com/repository/central"]
                  ["jcenter" "https://maven.aliyun.com/repository/jcenter"]

@@ -2,6 +2,7 @@
   (:require [clojure.string :as clj-str]
             [clojure.java.io :as io]
             [me.raynes.fs :as fs]
+            [digest]
             [dataseq-core.file-manager.fs :as fm-fs]))
 
 (def ^:private root-dir (atom ""))
@@ -44,6 +45,7 @@
    :modified (fs/mod-time filepath)
    :created  (str (fm-fs/creation-time filepath))
    :type     (get-ext filepath)
+   :md5sum   nil
    :location (if (nil? filter-path) "." filter-path)})
 
 (defn calc-dir-size [f]

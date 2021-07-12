@@ -114,7 +114,7 @@
                                {:keys [commit-ish subpath]} :query} :parameters}]
                           (log/info "List all files in the repo:" name commit-ish)
                           (let [repo-path (fs/join-paths (get-workdir) name)
-                                manifest (json/read (slurp (fs/join-paths repo-path "manifest.json")))]
+                                manifest (json/read-str (slurp (fs/join-paths repo-path "manifest.json")))]
                             (if (and (fs/exists? repo-path) (some? (gitter/exist-commit? repo-path commit-ish)))
                               (let [repo (gitter/init-repo! repo-path)]
                                 (ok (gitter/list-files-details repo

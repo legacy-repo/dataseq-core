@@ -8,6 +8,7 @@
             [dataseq-core.file-manager.fs :as fs])
   (:import [clojure.lang PersistentVector PersistentHashMap]
            [org.eclipse.jgit.treewalk TreeWalk]
+           [org.eclipse.jgit.treewalk.filter PathFilter]
            [org.eclipse.jgit.revwalk RevCommit RevTree]
            [org.eclipse.jgit.api Git]))
 
@@ -44,15 +45,15 @@
       (recur (clean-unwanted-file repo)
              (conj results (.first tree-set))))))
 
-(defn- build-rev-commit
+(defn build-rev-commit
   [^Git repo ^String commit-ish]
   (q/find-rev-commit repo (i/new-rev-walk repo) commit-ish))
 
-(defn- build-tree-walk
+(defn build-tree-walk
   [^Git repo ^String path ^RevTree tree]
   (TreeWalk/forPath (.getRepository repo) path tree))
 
-(defn- new-tree-walk
+(defn new-tree-walk
   [^Git repo ^String path ^RevCommit rev-commit]
   (if path
     (let [dir-walk  (TreeWalk. (.getRepository repo))
