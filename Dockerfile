@@ -52,13 +52,13 @@ ENV LC_CTYPE en_US.UTF-8
 # dependencies
 ## zip for zipping dependencies of workflow
 RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.tuna.tsinghua.edu.cn/g' /etc/apk/repositories
-RUN apk add --update bash ttf-dejavu fontconfig libgxps
+RUN apk add --update bash ttf-dejavu fontconfig libgxps curl
 RUN apk add ca-certificates && update-ca-certificates && apk add openssl
 
 # add dataseq-core script and uberjar
 RUN mkdir -p bin target/uberjar
 COPY --from=builder /app/source/target/uberjar/dataseq-core.jar /app/target/uberjar/
-COPY --from=builder /app/source/bin/start /app/bin/
+COPY --from=builder /app/source/bin /app/bin/
 
 # expose our default runtime port
 EXPOSE 3000
