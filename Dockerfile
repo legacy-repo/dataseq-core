@@ -3,20 +3,21 @@
 ###################
 
 # Build currently doesn't work on > Java 11 (i18n utils are busted) so build on 8 until we fix this
-FROM adoptopenjdk/openjdk8:alpine as builder
+FROM adoptopenjdk/openjdk8:latest as builder
 
 WORKDIR /app/source
 
 ENV FC_LANG en-US
 ENV LC_CTYPE en_US.UTF-8
 
+COPY sources.list /etc/apt/sources.list
+
 # bash:    various shell scripts
 # wget:    installing lein
 # git:     ./bin/version
 # make:    backend building
 # gettext: translations
-RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.tuna.tsinghua.edu.cn/g' /etc/apk/repositories
-RUN apk add --update coreutils bash git wget make gettext
+RUN apt-get update && apt-get install -y coreutils bash git wget make gettext
 
 # lein:    backend dependencies and building
 ADD ./bin/lein /usr/local/bin/lein
@@ -35,14 +36,11 @@ ADD . .
 # build the app
 RUN bin/build
 
-# install updated cacerts to /etc/ssl/certs/java/cacerts
-RUN apk add --update java-cacerts
-
 # ###################
 # # STAGE 2: runner
 # ###################
 
-FROM adoptopenjdk/openjdk11:alpine-jre as runner
+FROM adoptopenjdk/openjdk11:jre as runner
 
 WORKDIR /app
 
@@ -50,10 +48,12 @@ ENV FC_LANG en-US
 ENV LC_CTYPE en_US.UTF-8
 
 # dependencies
-## zip for zipping dependencies of workflow
-RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.tuna.tsinghua.edu.cn/g' /etc/apk/repositories
-RUN apk add --update bash ttf-dejavu fontconfig libgxps curl
-RUN apk add ca-certificates && update-ca-certificates && apk add openssl
+COPY sources.list /etc/apt/sources.list
+RUN echo "**** Install dev packages ****" && \
+    apt-get update && \
+    apt-get install -y bash wget git curl libxml2-dev libcurl4-openssl-dev libssl-dev && \
+    echo "**** Cleanup ****" && \
+    apt-get clean
 
 # add dataseq-core script and uberjar
 RUN mkdir -p bin target/uberjar
